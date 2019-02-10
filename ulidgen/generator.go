@@ -1,3 +1,4 @@
+// Package ulidgen generates ULIDs.
 package ulidgen
 
 import (
@@ -8,9 +9,9 @@ import (
 	"github.com/pkg/errors"
 )
 
-// Clock tells the current time.
+// Clock provides the time part of the ULID.
 type Clock interface {
-	// Now tells the current time.
+	// Now provides the time part of the ULID.
 	Now() time.Time
 }
 
