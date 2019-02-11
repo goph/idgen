@@ -10,4 +10,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [Unreleased]
 
 
-[Unreleased]: https://github.com/goph/idgen/compare/v0.0.0...HEAD
+## 0.1.0 - 2019-02-11
+
+- Initial release
+
+
+[Unreleased]: https://github.com/goph/idgen/compare/v0.1.0...HEAD
