@@ -32,14 +32,7 @@ func TestMust_Panic(t *testing.T) {
 func TestConstantGenerator(t *testing.T) {
 	generator := NewConstantGenerator("id")
 
-	id, err := generator.Generate()
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	if id != "id" {
-		t.Errorf("expected the value \"id\", got: %s", id)
-	}
+	testSafeGenerator(t, generator)
 }
 
 func TestConstantGenerator_Empty(t *testing.T) {
@@ -51,27 +44,16 @@ func TestConstantGenerator_Empty(t *testing.T) {
 	}
 }
 
-func TestGenerator_Panic(t *testing.T) {
+func TestGenerator(t *testing.T) {
 	generator := NewGenerator(NewConstantGenerator("id"))
 
-	id := generator.Generate()
-
-	if id != "id" {
-		t.Errorf("expected the value \"id\", got: %s", id)
-	}
+	testGenerator(t, generator)
 }
 
-func TestGenerator(t *testing.T) {
-	defer func() {
-		err := recover()
-		if err == nil {
-			t.Fatal("MustGenerator.Generate is expected to fail")
-		}
-	}()
-
+func TestGenerator_Panic(t *testing.T) {
 	generator := NewGenerator(NewConstantGenerator(""))
 
-	_ = generator.Generate()
+	testGeneratorPanic(t, generator)
 }
 
 func TestSafeGeneratorFunc_Generate(t *testing.T) {
@@ -79,6 +61,18 @@ func TestSafeGeneratorFunc_Generate(t *testing.T) {
 		return "id", nil
 	})
 
+	testSafeGenerator(t, generator)
+}
+
+func TestGeneratorFunc_Generate(t *testing.T) {
+	generator := GeneratorFunc(func() string {
+		return "id"
+	})
+
+	testGenerator(t, generator)
+}
+
+func testSafeGenerator(t *testing.T, generator SafeGenerator) {
 	id, err := generator.Generate()
 	if err != nil {
 		t.Fatal(err)
@@ -89,14 +83,21 @@ func TestSafeGeneratorFunc_Generate(t *testing.T) {
 	}
 }
 
-func TestGeneratorFunc_Generate(t *testing.T) {
-	generator := GeneratorFunc(func() string {
-		return "id"
-	})
-
+func testGenerator(t *testing.T, generator Generator) {
 	id := generator.Generate()
 
 	if id != "id" {
 		t.Errorf("expected the value \"id\", got: %s", id)
 	}
+}
+
+func testGeneratorPanic(t *testing.T, generator Generator) {
+	defer func() {
+		err := recover()
+		if err == nil {
+			t.Fatal("Generator is expected to fail")
+		}
+	}()
+
+	_ = generator.Generate()
 }
