@@ -29,8 +29,8 @@ func NewGenerator(clock Clock, entropy io.Reader) *Generator {
 	}
 }
 
-// New generates a new ID.
-func (g *Generator) New() (string, error) {
+// Generate generates a new ID.
+func (g *Generator) Generate() (string, error) {
 	id, err := ulid.New(ulid.Timestamp(g.clock.Now()), g.entropy)
 	if err != nil {
 		return "", errors.Wrap(err, "failed to generate ID")

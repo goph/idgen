@@ -13,7 +13,7 @@ func TestGenerator_New(t *testing.T) {
 	entropy := bytes.NewBufferString("entropy123456789")
 	generator := NewGenerator(clock, entropy)
 
-	id, err := generator.New()
+	id, err := generator.Generate()
 	if err != nil {
 		t.Fatal(err)
 	}

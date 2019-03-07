@@ -6,8 +6,8 @@ import (
 
 // Generator generates a new ID.
 type Generator interface {
-	// New generates a new ID.
-	New() (string, error)
+	// Generate generates a new ID.
+	Generate() (string, error)
 }
 
 // Must panics if a generator function returns with an error, otherwise it returns the generated ID.
@@ -30,9 +30,9 @@ func NewConstantGenerator(id string) *ConstantGenerator {
 	return &ConstantGenerator{id: id}
 }
 
-// New returns the same ID over and over again.
+// Generate returns the same ID over and over again.
 // If no ID is configured, it will return an error.
-func (g *ConstantGenerator) New() (string, error) {
+func (g *ConstantGenerator) Generate() (string, error) {
 	if g.id == "" {
 		return "", errors.New("no id is configured")
 	}
@@ -51,11 +51,11 @@ func NewMustGenerator(generator Generator) *MustGenerator {
 	return &MustGenerator{generator: generator}
 }
 
-// New panics if the underlying generator returns an error, otherwise it returns the generated ID.
-func (g *MustGenerator) New() (string, error) {
+// Generate panics if the underlying generator returns an error, otherwise it returns the generated ID.
+func (g *MustGenerator) Generate() (string, error) {
 	if g.generator == nil {
 		panic("generator is not configured")
 	}
 
-	return Must(g.generator.New()), nil
+	return Must(g.generator.Generate()), nil
 }

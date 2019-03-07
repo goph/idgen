@@ -32,7 +32,7 @@ func TestMust_Panic(t *testing.T) {
 func TestConstantGenerator(t *testing.T) {
 	generator := NewConstantGenerator("id")
 
-	id, err := generator.New()
+	id, err := generator.Generate()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -45,7 +45,7 @@ func TestConstantGenerator(t *testing.T) {
 func TestConstantGenerator_Empty(t *testing.T) {
 	generator := &ConstantGenerator{}
 
-	_, err := generator.New()
+	_, err := generator.Generate()
 	if err == nil || err.Error() != "no id is configured" {
 		t.Errorf("expected an error, got: %s", err)
 	}
@@ -54,7 +54,7 @@ func TestConstantGenerator_Empty(t *testing.T) {
 func TestMustGenerator_Panic(t *testing.T) {
 	generator := NewMustGenerator(NewConstantGenerator("id"))
 
-	id, err := generator.New()
+	id, err := generator.Generate()
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -68,11 +68,11 @@ func TestMustGenerator(t *testing.T) {
 	defer func() {
 		err := recover()
 		if err == nil {
-			t.Fatal("MustGenerator.New is expected to fail")
+			t.Fatal("MustGenerator.Generate is expected to fail")
 		}
 	}()
 
 	generator := NewMustGenerator(NewConstantGenerator(""))
 
-	_, _ = generator.New()
+	_, _ = generator.Generate()
 }
