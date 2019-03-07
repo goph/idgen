@@ -1,7 +1,7 @@
 package idgen
 
 import (
-	"errors"
+	"github.com/pkg/errors"
 )
 
 // SafeGenerator generates a new ID or returns an error.
