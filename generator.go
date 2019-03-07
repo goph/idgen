@@ -11,9 +11,23 @@ type SafeGenerator interface {
 	Generate() (string, error)
 }
 
+// SafeGeneratorFunc generates a new ID or returns an error.
+type SafeGeneratorFunc func() (string, error)
+
+func (fn SafeGeneratorFunc) Generate() (string, error) {
+	return fn()
+}
+
 // Generator generates a new ID and panics in case of any error.
 type Generator interface {
 	Generate() string
+}
+
+// GeneratorFunc generates a new ID and panics in case of any error.
+type GeneratorFunc func() string
+
+func (fn GeneratorFunc) Generate() string {
+	return fn()
 }
 
 // Must panics if a safe generator function returns with an error, otherwise it returns the generated ID.

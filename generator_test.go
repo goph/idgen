@@ -73,3 +73,30 @@ func TestGenerator(t *testing.T) {
 
 	_ = generator.Generate()
 }
+
+func TestSafeGeneratorFunc_Generate(t *testing.T) {
+	generator := SafeGeneratorFunc(func() (string, error) {
+		return "id", nil
+	})
+
+	id, err := generator.Generate()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if id != "id" {
+		t.Errorf("expected the value \"id\", got: %s", id)
+	}
+}
+
+func TestGeneratorFunc_Generate(t *testing.T) {
+	generator := GeneratorFunc(func() string {
+		return "id"
+	})
+
+	id := generator.Generate()
+
+	if id != "id" {
+		t.Errorf("expected the value \"id\", got: %s", id)
+	}
+}
