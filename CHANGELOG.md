@@ -9,6 +9,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- New `Generator` interface
+
+### Changed
+
+- Renamed `New` method to `Generate`
+- Renamed `Generator` interface to `SafeGenerator`
+
 
 ## 0.1.0 - 2019-02-11
 
