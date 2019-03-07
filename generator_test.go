@@ -51,8 +51,8 @@ func TestConstantGenerator_Empty(t *testing.T) {
 	}
 }
 
-func TestMustGenerator_Panic(t *testing.T) {
-	generator := NewMustGenerator(NewConstantGenerator("id"))
+func TestGenerator_Panic(t *testing.T) {
+	generator := NewGenerator(NewConstantGenerator("id"))
 
 	id := generator.Generate()
 
@@ -61,7 +61,7 @@ func TestMustGenerator_Panic(t *testing.T) {
 	}
 }
 
-func TestMustGenerator(t *testing.T) {
+func TestGenerator(t *testing.T) {
 	defer func() {
 		err := recover()
 		if err == nil {
@@ -69,7 +69,7 @@ func TestMustGenerator(t *testing.T) {
 		}
 	}()
 
-	generator := NewMustGenerator(NewConstantGenerator(""))
+	generator := NewGenerator(NewConstantGenerator(""))
 
 	_ = generator.Generate()
 }

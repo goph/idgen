@@ -46,19 +46,19 @@ func (g *ConstantGenerator) Generate() (string, error) {
 	return g.id, nil
 }
 
-// MustGenerator wraps another generator and delegates the ID generation to it.
+// NewGenerator turns a SafeGenerator into a generator that panics when an error occurs.
+func NewGenerator(generator SafeGenerator) Generator {
+	return &mustGenerator{generator: generator}
+}
+
+// mustGenerator wraps another generator and delegates the ID generation to it.
 // It panics if the delegated generator returns an error.
-type MustGenerator struct {
+type mustGenerator struct {
 	generator SafeGenerator
 }
 
-// NewMustGenerator returns a new MustGenerator.
-func NewMustGenerator(generator SafeGenerator) *MustGenerator {
-	return &MustGenerator{generator: generator}
-}
-
 // Generate panics if the underlying generator returns an error, otherwise it returns the generated ID.
-func (g *MustGenerator) Generate() string {
+func (g *mustGenerator) Generate() string {
 	if g.generator == nil {
 		panic("generator is not configured")
 	}
