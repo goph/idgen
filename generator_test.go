@@ -54,10 +54,7 @@ func TestConstantGenerator_Empty(t *testing.T) {
 func TestMustGenerator_Panic(t *testing.T) {
 	generator := NewMustGenerator(NewConstantGenerator("id"))
 
-	id, err := generator.Generate()
-	if err != nil {
-		t.Fatal(err)
-	}
+	id := generator.Generate()
 
 	if id != "id" {
 		t.Errorf("expected the value \"id\", got: %s", id)
@@ -74,5 +71,5 @@ func TestMustGenerator(t *testing.T) {
 
 	generator := NewMustGenerator(NewConstantGenerator(""))
 
-	_, _ = generator.Generate()
+	_ = generator.Generate()
 }

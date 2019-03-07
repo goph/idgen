@@ -4,13 +4,19 @@ import (
 	"errors"
 )
 
-// Generator generates a new ID.
-type Generator interface {
-	// Generate generates a new ID.
+// SafeGenerator generates a new ID or returns an error.
+// Although receiving errors is highly unlikely, reading from random generator sources could in theory fail.
+// Generator implementations should be safe by default.
+type SafeGenerator interface {
 	Generate() (string, error)
 }
 
-// Must panics if a generator function returns with an error, otherwise it returns the generated ID.
+// Generator generates a new ID and panics in case of any error.
+type Generator interface {
+	Generate() string
+}
+
+// Must panics if a safe generator function returns with an error, otherwise it returns the generated ID.
 func Must(id string, err error) string {
 	if err != nil {
 		panic(err)
@@ -43,19 +49,19 @@ func (g *ConstantGenerator) Generate() (string, error) {
 // MustGenerator wraps another generator and delegates the ID generation to it.
 // It panics if the delegated generator returns an error.
 type MustGenerator struct {
-	generator Generator
+	generator SafeGenerator
 }
 
 // NewMustGenerator returns a new MustGenerator.
-func NewMustGenerator(generator Generator) *MustGenerator {
+func NewMustGenerator(generator SafeGenerator) *MustGenerator {
 	return &MustGenerator{generator: generator}
 }
 
 // Generate panics if the underlying generator returns an error, otherwise it returns the generated ID.
-func (g *MustGenerator) Generate() (string, error) {
+func (g *MustGenerator) Generate() string {
 	if g.generator == nil {
 		panic("generator is not configured")
 	}
 
-	return Must(g.generator.Generate()), nil
+	return Must(g.generator.Generate())
 }
