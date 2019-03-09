@@ -14,10 +14,23 @@ func (c *fakeClock) Now() time.Time {
 	return c.now
 }
 
-func TestGenerator_New(t *testing.T) {
+func TestNewGenerator(t *testing.T) {
+	generator := NewGenerator()
+
+	id, err := generator.Generate()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if id == "" {
+		t.Errorf("the generator is expected to work with default options")
+	}
+}
+
+func TestGenerator_Generate(t *testing.T) {
 	clock := &fakeClock{now: time.Unix(1549414354, 0)}
 	entropy := bytes.NewBufferString("entropy123456789")
-	generator := NewGenerator(clock, entropy)
+	generator := NewGenerator(TimeSource(clock), EntropySource(entropy))
 
 	id, err := generator.Generate()
 	if err != nil {
