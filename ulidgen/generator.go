@@ -54,7 +54,7 @@ func EntropySource(entropy io.Reader) Option {
 	})
 }
 
-// NewGenerator returns a new Generator.
+// NewGenerator returns a new ULID generator.
 func NewGenerator(opts ...Option) *Generator {
 	g := &Generator{}
 
