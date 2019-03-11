@@ -9,6 +9,14 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## [Unreleased]
 
+### Added
+
+- UUID support (using [github.com/gofrs/uuid](https://github.com/gofrs/uuid))
+
+### Changed
+
+- Add functional options to ULID generator
+
 
 ## [0.2.0] - 2019-03-08
 
