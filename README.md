@@ -27,6 +27,7 @@ $ dep ensure -add github.com/goph/idgen
 ## Supported ID formats
 
 - ULID
+- UUID
 
 
 ## License
