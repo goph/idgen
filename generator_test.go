@@ -72,6 +72,26 @@ func TestGeneratorFunc_Generate(t *testing.T) {
 	testGenerator(t, generator)
 }
 
+func TestListGenerator(t *testing.T) {
+	generator := NewListGenerator([]string{"id"})
+
+	testSafeGenerator(t, generator)
+
+	_, err := generator.Generate()
+	if err == nil || err.Error() != "no more ids left" {
+		t.Errorf("expected an error, got: %s", err)
+	}
+}
+
+func TestListGenerator_Empty(t *testing.T) {
+	generator := &ListGenerator{}
+
+	_, err := generator.Generate()
+	if err == nil || err.Error() != "no more ids left" {
+		t.Errorf("expected an error, got: %s", err)
+	}
+}
+
 func testSafeGenerator(t *testing.T, generator SafeGenerator) {
 	id, err := generator.Generate()
 	if err != nil {
