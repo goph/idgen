@@ -1,6 +1,8 @@
 package idgen
 
 import (
+	"sync"
+
 	"github.com/pkg/errors"
 )
 
@@ -78,4 +80,35 @@ func (g *mustGenerator) Generate() string {
 	}
 
 	return Must(g.generator.Generate())
+}
+
+// ListGenerator will return an ID from a user-defined list.
+// If no ID list is configured or if it reaches the end of the list, it will return an error.
+// It is safe to use the ListGenerator in separate goroutines.
+type ListGenerator struct {
+	ids []string
+	cur int
+	mu  sync.Mutex
+}
+
+// NewListGenerator returns a new ListGenerator.
+func NewListGenerator(ids []string) *ListGenerator {
+	return &ListGenerator{ids: ids}
+}
+
+// Generate returns an ID from a user-defined list.
+// If no ID list is configured or if it reaches the end of the list, it will return an error.
+// It is safe to call this method in separate goroutines.
+func (g *ListGenerator) Generate() (string, error) {
+	g.mu.Lock()
+	defer g.mu.Unlock()
+
+	if len(g.ids) < g.cur+1 {
+		return "", errors.New("no more ids left")
+	}
+
+	id := g.ids[g.cur]
+	g.cur++
+
+	return id, nil
 }
